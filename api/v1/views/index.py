@@ -31,7 +31,7 @@ def status():
 def stats():
     """get objects count"""
     count_data = {}
-    for key, val in classes:
+    for key, val in classes.items():
         count_data[key] = storage.count(val)
 
     return jsonify(count_data)
