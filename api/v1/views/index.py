@@ -20,6 +20,7 @@ classes = {
     "users": User,
 }
 
+
 @app_views.route("/status", methods=["GET"])
 def status():
     ''' routes to status page '''
