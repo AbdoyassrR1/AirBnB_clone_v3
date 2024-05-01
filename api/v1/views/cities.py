@@ -7,6 +7,7 @@ from models.state import State
 from models.city import City
 from models.engine.db_storage import classes
 
+
 @app_views.route("/states/<state_id>/cities")
 def cities_in_a_state(state_id):
     """ Retrieves all city objects of a state """
@@ -61,7 +62,6 @@ def post_city(state_id):
         return jsonify(city.to_dict()), 201
     else:
         abort(400, "Missing name")
-
 
 
 @app_views.route("/cities/<city_id>", methods=["PUT"])
