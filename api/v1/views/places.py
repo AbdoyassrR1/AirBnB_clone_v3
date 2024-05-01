@@ -8,6 +8,7 @@ from models.city import City
 from models.state import State
 from models.user import User
 
+
 @app_views.route("/cities/<city_id>/places")
 def places(city_id):
     """ Get all places in a city """
