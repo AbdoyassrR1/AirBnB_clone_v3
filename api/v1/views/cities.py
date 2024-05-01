@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" handles all API actions for state object """
+""" handles all API actions for city object """
 from api.v1.views import app_views
 from flask import jsonify, abort, request
 from models import storage
