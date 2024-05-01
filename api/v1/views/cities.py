@@ -5,7 +5,7 @@ from flask import jsonify, abort, request
 from models import storage
 from models.state import State
 from models.city import City
-
+from models.engine.db_storage import classes
 
 @app_views.route("/states/<state_id>/cities")
 def cities_in_a_state(state_id):
@@ -42,21 +42,26 @@ def delete_city(city_id):
     return jsonify({}), 200
 
 
-@app_views.route("/states/<state_id>/cities", methods=["POST"])
-def create_city(state_id):
-    """ Creates a city """
-    state = storage.get(State, state_id)
-    if not state:
+@app_views.route("/states/<state_id>/cities",
+                 strict_slashes=False, methods=["POST"])
+def post_city(state_id):
+    """ Create a new city for a specific state """
+    state = storage.get(classes["State"], state_id)
+    if state is None:
         abort(404)
-    if not request.get_json():
+
+    city_data = request.get_json(force=True, silent=True)
+    if type(city_data) is not dict:
         abort(400, "Not a JSON")
-    if "name" not in request.get_json():
+
+    if "name" in city_data:
+        city = classes["City"](state_id=state_id, **city_data)
+        storage.new(city)
+        storage.save()
+        return jsonify(city.to_dict()), 201
+    else:
         abort(400, "Missing name")
 
-    city = City(state_id=state_id, **request.get_json())
-    city.save()
-
-    return jsonify(city.to_dict()), 201
 
 
 @app_views.route("/cities/<city_id>", methods=["PUT"])
