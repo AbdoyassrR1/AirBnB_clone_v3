@@ -32,10 +32,9 @@ def delete_amenity_from_a_place(place_id, amenity_id):
     """ delete amenity from a place. """
     place = storage.get(Place, place_id)
     amenity = storage.get(Amenity, amenity_id)
-    if not place:
+    if not place or not amenity:
         abort(404)
-    if not amenity:
-        abort(404)
+
     if amenity not in place.amenities:
         abort(404)
 
@@ -53,10 +52,9 @@ def add_amenity_to_a_place(place_id, amenity_id):
     """ add amenity to a place by its id """
     place = storage.get(Place, place_id)
     amenity = storage.get(Amenity, amenity_id)
-    if not place:
+    if not place or not amenity:
         abort(404)
-    if not amenity:
-        abort(404)
+
     if amenity in place.amenities:
         return jsonify(amenity.to_dict())
 
